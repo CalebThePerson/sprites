@@ -79,61 +79,134 @@ impl Engine {
                 }
 
                 Event::RedrawRequested(_) => {
-                    // if (input.is_key_down(winit::event::VirtualKeyCode::D)) {
-                    //     sprites[0].screen_region = [
-                    //         sprites[0].screen_region[0] + 32.0, // X
-                    //         sprites[0].screen_region[1],        // Y
-                    //         sprites[0].screen_region[2],
-                    //         sprites[0].screen_region[3],
-                    //     ];
-                    // } else if (input.is_key_down(winit::event::VirtualKeyCode::A)) {
-                    //     sprites[0].screen_region = [
-                    //         sprites[0].screen_region[0] - 32.0,
-                    //         sprites[0].screen_region[1],
-                    //         sprites[0].screen_region[2],
-                    //         sprites[0].screen_region[3],
-                    //     ];
-                    // } else if (input.is_key_down(winit::event::VirtualKeyCode::W)) {
-                    //     sprites[0].screen_region = [
-                    //         sprites[0].screen_region[0],
-                    //         sprites[0].screen_region[1] + 32.0,
-                    //         sprites[0].screen_region[2],
-                    //         sprites[0].screen_region[3],
-                    //     ];
-                    // } else if (input.is_key_down(winit::event::VirtualKeyCode::S)) {
-                    //     sprites[0].screen_region = [
-                    //         sprites[0].screen_region[0],
-                    //         sprites[0].screen_region[1] - 32.0,
-                    //         sprites[0].screen_region[2],
-                    //         sprites[0].screen_region[3],
-                    //     ];
-                    // } else if (input.is_key_down(winit::event::VirtualKeyCode::I)) {
-                    //     sprites[0].screen_region = [
-                    //         sprites[0].screen_region[0],
-                    //         sprites[0].screen_region[1],
-                    //         sprites[0].screen_region[2], // Scales it up LOL on the X
-                    //         sprites[0].screen_region[3], //Scales it on the Y aka stretches the shit lmao
-                    //     ];
-                    // }
-                    // ... All the 3d drawing code/render pipeline/queue/frame stuff goes here ...
-                    // ...all the drawing stuff goes here...
-                    // Leave now_keys alone, but copy over all changed keys
+                    //This is all the code for moving the left side player
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::W)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(2)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0],
+                            oldRegion[1] + 32.0,
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 2);
+                    }
+
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::S)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(2)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0],
+                            oldRegion[1] - 32.0,
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 2);
+                    }
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::D)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(2)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0] + 32.0,
+                            oldRegion[1],
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 2);
+                    }
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::A)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(2)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0] - 32.0,
+                            oldRegion[1],
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 2);
+                    }
+
+                    //This is all code for moving the Right side Player
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::Up)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(3)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0],
+                            oldRegion[1] + 32.0,
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 3);
+                    }
+
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::Down)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(3)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0],
+                            oldRegion[1] - 32.0,
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 3);
+                    }
+                    if (engine
+                        .input
+                        .is_key_down(winit::event::VirtualKeyCode::Right))
+                    {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(3)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0] + 32.0,
+                            oldRegion[1],
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 3);
+                    }
+                    if (engine.input.is_key_down(winit::event::VirtualKeyCode::Left)) {
+                        //Technically 0 Should always be the background
+                        //2 should always be the sprite until i change it
+                        let oldRegion = engine.sprites.get_sprites(3)[0].screen_region;
+                        let mut newRegion = [
+                            oldRegion[0] - 32.0,
+                            oldRegion[1],
+                            oldRegion[2],
+                            oldRegion[3],
+                        ];
+                        engine.sprites.update_position(newRegion, 3);
+                    }
+
+                    // engine.sprites.platform_move();
+
+                    engine.sprites.refresh_sprites(
+                        &engine.gpu,
+                        1,
+                        0..(engine.sprites.get_sprites(0).len()),
+                    );
+
+                    //This refreshes the sprite player group to update the position of both sprites
+                    engine.sprites.refresh_sprites(
+                        &engine.gpu,
+                        2,
+                        0..(engine.sprites.get_sprites(0).len()),
+                    );
+
+                    engine.sprites.refresh_sprites(
+                        &engine.gpu,
+                        3,
+                        0..(engine.sprites.get_sprites(0).len()),
+                    );
+
                     game.update(&mut engine);
                     engine.input.next_frame();
-                    // engine.sprites.set_camera(&gpu, &amera);
-                    //??
-                    // engine.sprites.refresh_sprites(
-                    //     &engine.gpu,
-                    //     0,
-                    //     0..engine.sprites.get_sprites(0).len(),
-                    // );
-
-                    // gpu.queue
-                    //     .write_buffer(&buffer_background, 0, bytemuck::cast_slice(&background));
-                    // gpu.queue
-                    //     .write_buffer(&buffer_camera, 0, bytemuck::bytes_of(&camera));
-                    // gpu.queue
-                    //     .write_buffer(&buffer_sprite, 0, bytemuck::cast_slice(&sprites));
 
                     // If the window system is telling us to redraw, let's get our next swapchain image
                     let frame = engine

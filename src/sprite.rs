@@ -163,10 +163,10 @@ impl SpriteRender {
     pub fn add_sprite_group(
         &mut self,
         gpu: &WGPU,
-        tex: wgpu::Texture,
+        tex: &wgpu::Texture,
         sprites: Vec<GPUSprite>,
         camera: GPUCamera,
-    ) -> usize {
+    ) {
         let view_kingtex_king = tex.create_view(&wgpu::TextureViewDescriptor::default());
         let sampler_kingtex_king = gpu
             .device
@@ -229,9 +229,10 @@ impl SpriteRender {
             buffer_camera,
         });
 
-        self.groups.len() - 1
+        // self.groups.len() - 1
     }
 
+    pub fn print_group(&self, sprite: usize) {}
     pub fn set_camera(&mut self, gpu: &WGPU, index: usize, camera: GPUCamera) {
         let sg = &mut self.groups[index];
         sg.camera = camera;
@@ -253,17 +254,14 @@ impl SpriteRender {
         )
     }
 
-    pub fn get_sprites_mut(
-        &mut self,
-        gpu: &WGPU,
-        which: usize,
-        range: Range<usize>,
-        sprites: &[GPUCamera],
-    ) -> &mut [GPUSprite] {
+    pub fn get_sprite_mut(&mut self, which: usize, range: usize) -> &mut GPUSprite {
         &mut self.groups[which].sprites[range]
     }
     pub fn get_sprites(&self, which: usize) -> &[GPUSprite] {
         &self.groups[which].sprites
+    }
+    pub fn get_all_sprites_mut(&mut self, which: usize) -> &mut [GPUSprite] {
+        &mut self.groups[which].sprites
     }
     pub fn group_size(&self, which: usize) -> &[GPUSprite] {
         &self.groups[which].sprites
@@ -275,12 +273,25 @@ impl SpriteRender {
     {
         rpass.set_pipeline(&self.pipeline);
         for group in self.groups.iter() {
-            // rpass.set_vertex_buffer(0, group.sprite_buffer.slice(..));
+            // rpass.set_vertex_buffer(0, group.sprite_buffer.slice(0..10));
             //maybe take out of loop idk
 
             rpass.set_bind_group(0, &group.sprite_bind_group, &[]);
             rpass.set_bind_group(1, &group.tex_bind_group, &[]);
             rpass.draw(0..6, 0..(group.sprites.len() as u32));
+        }
+    }
+
+    pub fn update_position(&mut self, newRegion: [f32; 4], sprite: usize) {
+        let theSprite = self.get_sprite_mut(sprite, 0);
+        theSprite.screen_region = newRegion;
+    }
+
+    //Trying to make moving platforms that move back and foth
+    pub fn platform_move(&mut self) {
+        let allPlatforms = self.get_all_sprites_mut(2);
+        for platform in allPlatforms.iter_mut() {
+            platform.sheet_region[0] = platform.sheet_region[0] + 32.0;
         }
     }
 }
